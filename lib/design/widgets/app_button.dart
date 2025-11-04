@@ -5,7 +5,12 @@ class AppButton extends StatelessWidget {
   final Widget child;
   final bool filled;
 
-  const AppButton({super.key, required this.onPressed, required this.child, this.filled = true});
+  const AppButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    this.filled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +21,14 @@ class AppButton extends StatelessWidget {
     if (filled) {
       return ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: labelColor,
-        ),
+        style: ElevatedButton.styleFrom(foregroundColor: labelColor),
         child: child,
       );
     }
     return OutlinedButton(
       onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: labelColor,
-      ),
+      style: OutlinedButton.styleFrom(foregroundColor: labelColor),
       child: child,
     );
   }
 }
-

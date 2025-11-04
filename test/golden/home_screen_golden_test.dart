@@ -6,13 +6,10 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => CounterNotifier()),
-          ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider(create: (_) => CounterProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ],
-        child: MaterialApp(
-          theme: AppTheme.light,
-          home: const HomeScreen(),
-        ),
+        child: MaterialApp(theme: AppTheme.light, home: const HomeScreen()),
       ),
     );
 
@@ -26,9 +23,9 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => CounterNotifier()),
+          ChangeNotifierProvider(create: (_) => CounterProvider()),
           ChangeNotifierProvider(
-            create: (_) => ThemeNotifier()..setMode(ThemeMode.dark),
+            create: (_) => ThemeProvider()..setMode(ThemeMode.dark),
           ),
         ],
         child: MaterialApp(
@@ -47,7 +44,7 @@ void main() {
   });
 
   testWidgets('HomeScreen with count=5 golden', (tester) async {
-    final counter = CounterNotifier();
+    final counter = CounterProvider();
     for (int i = 0; i < 5; i++) {
       counter.increment();
     }
@@ -56,12 +53,9 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: counter),
-          ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ],
-        child: MaterialApp(
-          theme: AppTheme.light,
-          home: const HomeScreen(),
-        ),
+        child: MaterialApp(theme: AppTheme.light, home: const HomeScreen()),
       ),
     );
 

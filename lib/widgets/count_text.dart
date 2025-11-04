@@ -5,7 +5,7 @@ class CountText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final count = context.select((CounterNotifier provider) => provider.count);
+    final count = context.select((CounterProvider provider) => provider.count);
     return AppHeadline('$count');
   }
 }

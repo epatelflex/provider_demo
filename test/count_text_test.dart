@@ -3,7 +3,7 @@ import 'package:provider_demo/index.dart';
 
 void main() {
   testWidgets('CountText shows current count and updates', (tester) async {
-    final counter = CounterNotifier();
+    final counter = CounterProvider();
     await tester.pumpWidget(
       MultiProvider(
         providers: [ChangeNotifierProvider.value(value: counter)],
@@ -17,4 +17,3 @@ void main() {
     expect(find.text('1'), findsOneWidget);
   });
 }
-

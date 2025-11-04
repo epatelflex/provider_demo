@@ -29,6 +29,14 @@ class HomeScreen extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
+            const SizedBox(height: 12),
+            AppButton(
+              onPressed: () => context.go('/users'),
+              child: AppBody(
+                'View Users',
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
           ],
         ),
       ),
@@ -36,4 +44,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

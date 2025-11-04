@@ -6,13 +6,10 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => CounterNotifier()),
-          ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider(create: (_) => CounterProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ],
-        child: MaterialApp(
-          theme: AppTheme.light,
-          home: const DetailsScreen(),
-        ),
+        child: MaterialApp(theme: AppTheme.light, home: const DetailsScreen()),
       ),
     );
 
@@ -26,9 +23,9 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => CounterNotifier()),
+          ChangeNotifierProvider(create: (_) => CounterProvider()),
           ChangeNotifierProvider(
-            create: (_) => ThemeNotifier()..setMode(ThemeMode.dark),
+            create: (_) => ThemeProvider()..setMode(ThemeMode.dark),
           ),
         ],
         child: MaterialApp(

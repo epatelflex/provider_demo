@@ -1,6 +1,6 @@
 import 'package:provider_demo/index.dart';
 
-class ThemeNotifier extends ChangeNotifier {
+class ThemeProvider extends ChangeNotifier {
   ThemeMode _mode = ThemeMode.light;
   ThemeMode get mode => _mode;
 

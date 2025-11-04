@@ -1,6 +1,6 @@
 import 'package:provider_demo/index.dart';
 
-class CounterNotifier extends ChangeNotifier {
+class CounterProvider extends ChangeNotifier {
   int _count = 0;
 
   int get count => _count;

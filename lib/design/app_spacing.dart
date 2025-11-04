@@ -7,4 +7,3 @@ class AppSpacing {
   static const double lg = 24;
   static const double xl = 32;
 }
-

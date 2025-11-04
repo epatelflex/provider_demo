@@ -7,15 +7,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CounterNotifier()),
-        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => CounterProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: Builder(
         builder: (context) => MaterialApp.router(
           title: 'Provider + GoRouter Demo',
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
-          themeMode: context.watch<ThemeNotifier>().mode,
+          themeMode: context.watch<ThemeProvider>().mode,
           routerConfig: appRouter,
           debugShowCheckedModeBanner: false,
         ),

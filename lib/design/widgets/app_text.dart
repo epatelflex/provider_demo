@@ -48,7 +48,8 @@ class AppHeadline extends _BaseText {
   });
 
   @override
-  TextStyle? baseStyle(BuildContext context) => Theme.of(context).textTheme.headlineMedium;
+  TextStyle? baseStyle(BuildContext context) =>
+      Theme.of(context).textTheme.headlineMedium;
 }
 
 class AppTitle extends _BaseText {
@@ -63,7 +64,8 @@ class AppTitle extends _BaseText {
   });
 
   @override
-  TextStyle? baseStyle(BuildContext context) => Theme.of(context).textTheme.titleMedium;
+  TextStyle? baseStyle(BuildContext context) =>
+      Theme.of(context).textTheme.titleMedium;
 }
 
 class AppBody extends _BaseText {
@@ -78,7 +80,8 @@ class AppBody extends _BaseText {
   });
 
   @override
-  TextStyle? baseStyle(BuildContext context) => Theme.of(context).textTheme.bodyLarge;
+  TextStyle? baseStyle(BuildContext context) =>
+      Theme.of(context).textTheme.bodyLarge;
 }
 
 class AppCaption extends _BaseText {
@@ -93,6 +96,6 @@ class AppCaption extends _BaseText {
   });
 
   @override
-  TextStyle? baseStyle(BuildContext context) => Theme.of(context).textTheme.labelMedium;
+  TextStyle? baseStyle(BuildContext context) =>
+      Theme.of(context).textTheme.labelMedium;
 }
-
