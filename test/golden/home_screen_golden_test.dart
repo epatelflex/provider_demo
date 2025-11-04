@@ -1,13 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider_demo/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   testWidgets('HomeScreen light theme golden', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CounterProvider()),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
         ],
         child: MaterialApp(theme: AppTheme.light, home: const HomeScreen()),
       ),
@@ -20,12 +24,19 @@ void main() {
   });
 
   testWidgets('HomeScreen dark theme golden', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CounterProvider()),
           ChangeNotifierProvider(
-            create: (_) => ThemeProvider()..setMode(ThemeMode.dark),
+            create: (_) {
+              final theme = ThemeProvider(prefs);
+              theme.setMode(ThemeMode.dark);
+              return theme;
+            },
           ),
         ],
         child: MaterialApp(
@@ -44,6 +55,9 @@ void main() {
   });
 
   testWidgets('HomeScreen with count=5 golden', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     final counter = CounterProvider();
     for (int i = 0; i < 5; i++) {
       counter.increment();
@@ -53,7 +67,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: counter),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
         ],
         child: MaterialApp(theme: AppTheme.light, home: const HomeScreen()),
       ),

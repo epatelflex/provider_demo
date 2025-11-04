@@ -1,13 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider_demo/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   testWidgets('SettingsScreen light mode off golden', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CounterProvider()),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          ChangeNotifierProvider(create: (_) => ThemeProvider(prefs)),
         ],
         child: MaterialApp(theme: AppTheme.light, home: const SettingsScreen()),
       ),
@@ -20,12 +24,19 @@ void main() {
   });
 
   testWidgets('SettingsScreen dark mode on golden', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CounterProvider()),
           ChangeNotifierProvider(
-            create: (_) => ThemeProvider()..setMode(ThemeMode.dark),
+            create: (_) {
+              final theme = ThemeProvider(prefs);
+              theme.setMode(ThemeMode.dark);
+              return theme;
+            },
           ),
         ],
         child: MaterialApp(

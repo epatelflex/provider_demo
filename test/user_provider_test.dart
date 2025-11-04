@@ -1,9 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:provider_demo/index.dart';
 
 void main() {
   test('UserProvider initializes with empty state', () {
-    final notifier = UserProvider();
+    final mockClient = MockClient((request) async {
+      return http.Response('[]', 200);
+    });
+    final service = UserService(mockClient);
+    final notifier = UserProvider(service);
+
     expect(notifier.users, null);
     expect(notifier.isLoading, false);
     expect(notifier.error, null);
@@ -12,11 +19,18 @@ void main() {
   });
 
   test('UserProvider sets loading state when loadUsers is called', () async {
-    final notifier = UserProvider();
+    final mockClient = MockClient((request) async {
+      await Future.delayed(const Duration(milliseconds: 10));
+      return http.Response(
+          '[{"id":1,"name":"Test","username":"test","email":"test@example.com","phone":"123","website":"test.com","address":{"street":"","suite":"","city":"","zipcode":"","geo":{"lat":"0","lng":"0"}},"company":{"name":"Test","catchPhrase":"","bs":""}}]',
+          200);
+    });
+    final service = UserService(mockClient);
+    final notifier = UserProvider(service);
     var notifyCount = 0;
     notifier.addListener(() => notifyCount++);
 
-    // Start loading - this will make an actual HTTP request
+    // Start loading
     final loadFuture = notifier.loadUsers();
 
     // Should be loading immediately
@@ -30,14 +44,17 @@ void main() {
     expect(notifier.isLoading, false);
     expect(notifyCount, 2);
 
-    // Should either have data or error
-    expect(notifier.hasData || notifier.hasError, true);
+    // Should have data
+    expect(notifier.hasData, true);
+    expect(notifier.users, hasLength(1));
   });
 
-  test('UserProvider clearError removes error', () {
-    final notifier = UserProvider();
-    // Manually set error for testing
-    notifier.loadUsers(); // This might fail or succeed
+  test('UserProvider clearError removes error', () async {
+    final mockClient = MockClient((request) async {
+      return http.Response('[]', 200);
+    });
+    final service = UserService(mockClient);
+    final notifier = UserProvider(service);
 
     var notifyCount = 0;
     notifier.addListener(() => notifyCount++);
