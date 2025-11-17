@@ -8,7 +8,5 @@ class UserProvider extends AsyncNotifier with AsyncLoadingMixin<List<User>> {
   /// Convenience getter for accessing loaded users
   List<User>? get users => data;
 
-  Future<void> loadUsers() async {
-    await loadData(() => _service.getUsers());
-  }
+  Future<void> loadUsers() => loadData(() => _service.getUsers());
 }
