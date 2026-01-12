@@ -33,4 +33,3 @@ abstract class AsyncLoadable {
 ///
 /// Providers using AsyncLoadingMixin automatically satisfy this constraint.
 abstract class AsyncNotifier extends ChangeNotifier implements AsyncLoadable {}
-

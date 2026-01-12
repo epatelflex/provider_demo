@@ -26,14 +26,12 @@ class MyApp extends StatelessWidget {
         // Provider layer: State management
         ChangeNotifierProxyProvider<UserService, UserProvider>(
           create: (context) => UserProvider(context.read<UserService>()),
-          update: (_, service, previous) =>
-              previous ?? UserProvider(service),
+          update: (_, service, previous) => previous ?? UserProvider(service),
         ),
         ChangeNotifierProvider(create: (_) => CounterProvider()),
         ChangeNotifierProxyProvider<SharedPreferences, ThemeProvider>(
           create: (context) => ThemeProvider(context.read<SharedPreferences>()),
-          update: (_, prefs, previous) =>
-              previous ?? ThemeProvider(prefs),
+          update: (_, prefs, previous) => previous ?? ThemeProvider(prefs),
         ),
       ],
       child: Builder(

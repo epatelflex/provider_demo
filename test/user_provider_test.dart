@@ -22,8 +22,9 @@ void main() {
     final mockClient = MockClient((request) async {
       await Future.delayed(const Duration(milliseconds: 10));
       return http.Response(
-          '[{"id":1,"name":"Test","username":"test","email":"test@example.com","phone":"123","website":"test.com","address":{"street":"","suite":"","city":"","zipcode":"","geo":{"lat":"0","lng":"0"}},"company":{"name":"Test","catchPhrase":"","bs":""}}]',
-          200);
+        '[{"id":1,"name":"Test","username":"test","email":"test@example.com","phone":"123","website":"test.com","address":{"street":"","suite":"","city":"","zipcode":"","geo":{"lat":"0","lng":"0"}},"company":{"name":"Test","catchPhrase":"","bs":""}}]',
+        200,
+      );
     });
     final service = UserService(mockClient);
     final notifier = UserProvider(service);

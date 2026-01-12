@@ -32,7 +32,8 @@ class NetworkException extends ApiException {
 /// This occurs when the server doesn't respond within the configured timeout period.
 class RequestTimeoutException extends ApiException {
   @override
-  String get message => 'Request timed out. Please check your connection and try again.';
+  String get message =>
+      'Request timed out. Please check your connection and try again.';
 
   @override
   String toString() => 'RequestTimeoutException: $message';
@@ -64,8 +65,7 @@ class ServerException extends ApiException {
   ServerException(this.statusCode);
 
   @override
-  String get message =>
-      'Server error ($statusCode). Please try again later.';
+  String get message => 'Server error ($statusCode). Please try again later.';
 
   @override
   String toString() => 'ServerException($statusCode): $message';

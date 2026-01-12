@@ -1,4 +1,3 @@
-
 import 'package:provider_demo/index.dart';
 
 class UsersScreen extends StatelessWidget {

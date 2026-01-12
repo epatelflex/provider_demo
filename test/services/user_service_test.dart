@@ -79,27 +79,23 @@ void main() {
       final service = UserService(mockClient);
 
       // Act & Assert
-      expect(
-        () => service.getUsers(),
-        throwsA(isA<ParseException>()),
-      );
+      expect(() => service.getUsers(), throwsA(isA<ParseException>()));
     });
 
-    test('getUsers() throws ParseException on missing required fields',
-        () async {
-      // Arrange
-      final mockClient = MockClient((request) async {
-        return http.Response('[{"id": 1}]', 200); // Missing required fields
-      });
+    test(
+      'getUsers() throws ParseException on missing required fields',
+      () async {
+        // Arrange
+        final mockClient = MockClient((request) async {
+          return http.Response('[{"id": 1}]', 200); // Missing required fields
+        });
 
-      final service = UserService(mockClient);
+        final service = UserService(mockClient);
 
-      // Act & Assert
-      expect(
-        () => service.getUsers(),
-        throwsA(isA<ParseException>()),
-      );
-    });
+        // Act & Assert
+        expect(() => service.getUsers(), throwsA(isA<ParseException>()));
+      },
+    );
 
     test('getUsers() throws NetworkException on 4xx errors', () async {
       // Arrange
@@ -132,30 +128,34 @@ void main() {
       expect(
         () => service.getUsers(),
         throwsA(
-          isA<ServerException>()
-              .having((e) => e.statusCode, 'statusCode', 500),
+          isA<ServerException>().having((e) => e.statusCode, 'statusCode', 500),
         ),
       );
     });
 
-    test('getUsers() throws ServerException on 503 Service Unavailable',
-        () async {
-      // Arrange
-      final mockClient = MockClient((request) async {
-        return http.Response('Service Unavailable', 503);
-      });
+    test(
+      'getUsers() throws ServerException on 503 Service Unavailable',
+      () async {
+        // Arrange
+        final mockClient = MockClient((request) async {
+          return http.Response('Service Unavailable', 503);
+        });
 
-      final service = UserService(mockClient);
+        final service = UserService(mockClient);
 
-      // Act & Assert
-      expect(
-        () => service.getUsers(),
-        throwsA(
-          isA<ServerException>()
-              .having((e) => e.statusCode, 'statusCode', 503),
-        ),
-      );
-    });
+        // Act & Assert
+        expect(
+          () => service.getUsers(),
+          throwsA(
+            isA<ServerException>().having(
+              (e) => e.statusCode,
+              'statusCode',
+              503,
+            ),
+          ),
+        );
+      },
+    );
 
     test('getUsers() throws RequestTimeoutException on timeout', () async {
       // Arrange
@@ -167,10 +167,7 @@ void main() {
       final service = UserService(mockClient);
 
       // Act & Assert
-      expect(
-        () => service.getUsers(),
-        throwsA(isA<RequestTimeoutException>()),
-      );
+      expect(() => service.getUsers(), throwsA(isA<RequestTimeoutException>()));
     });
 
     test('getUsers() throws NoInternetException on SocketException', () async {
@@ -182,37 +179,19 @@ void main() {
       final service = UserService(mockClient);
 
       // Act & Assert
-      expect(
-        () => service.getUsers(),
-        throwsA(isA<NoInternetException>()),
-      );
+      expect(() => service.getUsers(), throwsA(isA<NoInternetException>()));
     });
 
     test('exception messages are user-friendly', () {
-      expect(
-        NetworkException(404, 'Not found').message,
-        'Not found',
-      );
+      expect(NetworkException(404, 'Not found').message, 'Not found');
 
-      expect(
-        ServerException(500).message,
-        contains('Server error'),
-      );
+      expect(ServerException(500).message, contains('Server error'));
 
-      expect(
-        RequestTimeoutException().message,
-        contains('timed out'),
-      );
+      expect(RequestTimeoutException().message, contains('timed out'));
 
-      expect(
-        ParseException('Invalid data').message,
-        contains('parse'),
-      );
+      expect(ParseException('Invalid data').message, contains('parse'));
 
-      expect(
-        NoInternetException().message,
-        contains('No internet'),
-      );
+      expect(NoInternetException().message, contains('No internet'));
     });
   });
 }

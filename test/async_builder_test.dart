@@ -84,7 +84,8 @@ void main() {
           child: MaterialApp(
             home: Scaffold(
               body: AsyncBuilder<MockProvider>(
-                onLoad: (p) async => await p.loadFailure(Exception('Test error')),
+                onLoad: (p) async =>
+                    await p.loadFailure(Exception('Test error')),
                 builder: (context, p) => const Text('Data loaded'),
               ),
             ),
@@ -108,7 +109,8 @@ void main() {
           child: MaterialApp(
             home: Scaffold(
               body: AsyncBuilder<MockProvider>(
-                onLoad: (p) async => await p.loadFailure(Exception('Custom error message')),
+                onLoad: (p) async =>
+                    await p.loadFailure(Exception('Custom error message')),
                 errorBuilder: (context, p, error) {
                   return Text('Custom error: ${error.toString()}');
                 },

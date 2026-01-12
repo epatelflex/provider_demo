@@ -40,7 +40,7 @@ class AsyncBuilder<T extends AsyncNotifier> extends StatefulWidget {
   /// Defaults to error icon, message, and retry button.
   /// Receives the error object as the third parameter (can be cast to specific exception types).
   final Widget Function(BuildContext context, T provider, Object error)?
-      errorBuilder;
+  errorBuilder;
 
   /// Optional builder for the empty state (when data is null or empty).
   /// Defaults to "No data found" message.
@@ -103,7 +103,8 @@ class _AsyncBuilderState<T extends AsyncNotifier>
     final data = provider.data;
     final isEmptyData = widget.isEmpty?.call(provider) ?? data == null;
     if (isEmptyData) {
-      return widget.emptyBuilder?.call(context) ?? _defaultEmptyBuilder(context);
+      return widget.emptyBuilder?.call(context) ??
+          _defaultEmptyBuilder(context);
     }
 
     // Show data state
@@ -136,4 +137,3 @@ class _AsyncBuilderState<T extends AsyncNotifier>
     return const Center(child: AppBody('No data found'));
   }
 }
-
