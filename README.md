@@ -2,8 +2,8 @@
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.9.2-02569B?logo=flutter)](https://flutter.dev)
 [![Tests](https://img.shields.io/badge/tests-50%20passing-success)](test/)
-[![Coverage](https://img.shields.io/badge/test--to--code-1.00:1-success)](test/)
-[![Code Quality](https://img.shields.io/badge/code%20quality-9.2%2F10-brightgreen)](#code-quality)
+[![Coverage](https://img.shields.io/badge/test--to--code-1.32:1-success)](test/)
+[![Code Quality](https://img.shields.io/badge/code%20quality-9.3%2F10-brightgreen)](#code-quality)
 
 A **production-ready** Flutter application demonstrating best practices in state management, dependency injection, error handling, and testing using the Provider package.
 
@@ -19,6 +19,7 @@ This demo showcases production-ready patterns and best practices:
 
 ### 🎯 State Management
 - **Provider** package for dependency injection and state management
+- **Fluent provider access** via `context.subscribe` and `context.get` extensions
 - **AsyncLoadable** interface for type-safe async operations
 - **AsyncLoadingMixin** for reusable async state handling
 - **AsyncBuilder** widget for declarative UI states
@@ -35,7 +36,7 @@ This demo showcases production-ready patterns and best practices:
 - Foundation for offline data caching
 
 ### 🧪 Testing
-- **50 comprehensive tests** (1.00:1 test-to-code ratio)
+- **50 comprehensive tests** (1.32:1 test-to-code ratio)
 - **Unit tests** for providers, services, and mixins
 - **Widget tests** for UI behavior
 - **Golden tests** for visual regression
@@ -51,43 +52,45 @@ This demo showcases production-ready patterns and best practices:
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| **Overall Score** | 9.2/10 | ⭐ A+ |
+| **Overall Score** | 9.3/10 | ⭐ A+ |
 | **Production Readiness** | 9/10 | ✅ Ready |
 | **Tests** | 50 passing | ✅ |
-| **Test-to-Code Ratio** | 1.00:1 | ⭐ Perfect |
+| **Test-to-Code Ratio** | 1.32:1 | ⭐ Excellent |
 | **Linting Issues** | 0 | ✅ |
-| **Lines of Code** | 2,340 | - |
+| **Lines of Code** | 3,182 | - |
 | **Type Safety** | 100% | ✅ |
 
 See [CODE_ASSESSMENT.md](CODE_ASSESSMENT.md) for detailed analysis.
 
 ## 🏛️ Architecture
 
-```
-┌──────────────────────────────────────────────┐
-│  Infrastructure Layer (Injected Resources)   │
-│  • http.Client                               │
-│  • SharedPreferences                         │
-└──────────────────┬───────────────────────────┘
-                   │ injected via Provider
-┌──────────────────▼───────────────────────────┐
-│  Service Layer (Business Logic)              │
-│  • UserService(http.Client)                  │
-│  • Structured exception handling             │
-└──────────────────┬───────────────────────────┘
-                   │ injected via ProxyProvider
-┌──────────────────▼───────────────────────────┐
-│  Provider Layer (State Management)           │
-│  • UserProvider(UserService)                 │
-│  • ThemeProvider(SharedPreferences)          │
-│  • CounterProvider                           │
-└──────────────────┬───────────────────────────┘
-                   │ context.watch/read
-┌──────────────────▼───────────────────────────┐
-│  UI Layer (Widgets & Screens)                │
-│  • AsyncBuilder<T extends AsyncNotifier>     │
-│  • Type-safe provider access                 │
-└──────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Infrastructure["Infrastructure Layer"]
+        HTTP["http.Client"]
+        Prefs["SharedPreferences"]
+    end
+
+    subgraph Services["Service Layer"]
+        UserService["UserService(http.Client)"]
+        Exceptions["Structured Exception Handling"]
+    end
+
+    subgraph Providers["Provider Layer"]
+        UserProvider["UserProvider(UserService)"]
+        ThemeProvider["ThemeProvider(SharedPreferences)"]
+        CounterProvider["CounterProvider"]
+    end
+
+    subgraph UI["UI Layer"]
+        AsyncBuilder["AsyncBuilder&lt;T&gt;"]
+        Screens["Screens & Widgets"]
+        Extensions["context.subscribe / context.get"]
+    end
+
+    Infrastructure -->|"injected via Provider"| Services
+    Services -->|"injected via ProxyProvider"| Providers
+    Providers -->|"context.subscribe / context.get"| UI
 ```
 
 ### Dependency Injection Flow
@@ -133,6 +136,8 @@ lib/
 │       └── app_text.dart
 ├── exceptions/               # Error handling
 │   └── api_exception.dart
+├── extensions/               # Context extensions
+│   └── context_extensions.dart
 ├── interfaces/               # Contracts
 │   └── async_loadable.dart
 ├── mixins/                   # Reusable behaviors
@@ -225,7 +230,50 @@ dart format .
 
 ## 🎓 Key Patterns & Concepts
 
-### 1. Type-Safe Async State Management
+### 1. Fluent Provider Access API
+
+The app provides a fluent API for accessing providers via context extensions:
+
+```mermaid
+flowchart LR
+    subgraph Subscribe["context.subscribe (reactive)"]
+        S1["count"] --> R1["Rebuilds on change"]
+        S2["themeMode"] --> R1
+        S3["users"] --> R1
+        S4["isLoadingUsers"] --> R1
+    end
+
+    subgraph Get["context.get (one-time)"]
+        G1["counter"] --> R2["No rebuild"]
+        G2["theme"] --> R2
+        G3["userProvider"] --> R2
+    end
+```
+
+**Reactive access** (use in `build()` methods):
+```dart
+// Widget rebuilds when value changes
+final count = context.subscribe.count;
+final themeMode = context.subscribe.themeMode;
+final users = context.subscribe.users;
+final isLoading = context.subscribe.isLoadingUsers;
+```
+
+**One-time access** (use in callbacks):
+```dart
+// No subscription, no rebuild
+context.get.counter.increment();
+context.get.theme.toggle();
+context.get.userProvider.loadUsers();
+```
+
+**Benefits**:
+- ✅ Better discoverability via autocomplete
+- ✅ More concise than `context.select()` / `context.read()`
+- ✅ Full type safety preserved
+- ✅ Clear semantic distinction between reactive and one-time access
+
+### 2. Type-Safe Async State Management
 
 The app uses a custom `AsyncLoadable` interface to ensure type-safe async operations:
 
@@ -255,7 +303,7 @@ class UserProvider extends AsyncNotifier with AsyncLoadingMixin<List<User>> {
 }
 ```
 
-### 2. AsyncBuilder Widget
+### 3. AsyncBuilder Widget
 
 A declarative widget that handles all async states:
 
@@ -273,7 +321,7 @@ AsyncBuilder<UserProvider>(
 )
 ```
 
-### 3. Structured Error Handling
+### 4. Structured Error Handling
 
 Custom exception hierarchy for type-safe error handling:
 
@@ -311,7 +359,7 @@ Future<List<User>> getUsers() async {
 }
 ```
 
-### 4. Dependency Injection with Provider
+### 5. Dependency Injection with Provider
 
 Three-layer DI architecture:
 
@@ -334,7 +382,7 @@ ChangeNotifierProxyProvider<UserService, UserProvider>(
 ),
 ```
 
-### 5. State Persistence
+### 6. State Persistence
 
 Theme preferences persist across app restarts:
 
