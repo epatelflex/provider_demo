@@ -6,7 +6,7 @@ class IncrementFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => context.read<CounterProvider>().increment(),
+      onPressed: () => context.get.counter.increment(),
       child: const Icon(Icons.add),
     );
   }

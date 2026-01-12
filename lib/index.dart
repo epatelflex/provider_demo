@@ -7,6 +7,7 @@ export 'router.dart';
 
 export 'data/user.dart';
 export 'exceptions/api_exception.dart';
+export 'extensions/context_extensions.dart';
 export 'design/app_colors.dart';
 export 'design/app_spacing.dart';
 export 'design/app_theme.dart';
